@@ -1,118 +1,78 @@
-package com.vipulasri.jetinstagram.ui.favorites
+package com.vipulasri.jetinstagram.ui.favorite
 
-import android.annotation.SuppressLint
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.OutlinedTextField
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil.compose.rememberImagePainter
-import com.vipulasri.jetinstagram.R
-import com.vipulasri.jetinstagram.data.Favorite
-import com.vipulasri.jetinstagram.ui.components.icon
+import com.vipulasri.jetinstagram.data.PostsRepository
+import com.vipulasri.jetinstagram.data.StoriesRepository
 
-@SuppressLint("UnusedMaterialScaffoldPaddingParameter")
-@ExperimentalFoundationApi
 @Composable
 fun Favorite() {
-    // Sample data for favorite posts
-    val favoritePosts = remember { mutableStateListOf<Favorite>() }
-
-    // Add sample favorite posts
-    favoritePosts.addAll(
-        listOf(
-            Favorite(
-                id = "1",
-                image = "https://randomuser.me/api/portraits/men/1.jpg",
-                caption = "random 1"
-            ),
-            Favorite(
-                id = "2",
-                image = "https://randomuser.me/api/portraits/men/2.jpg",
-                caption = "random 2"
-            ),
-            Favorite(
-                id = "3",
-                image = "https://randomuser.me/api/portraits/men/3.jpg",
-                caption = "random 3"
-            )
-        )
-    )
+    // Fetching posts and stories
+    val posts by PostsRepository.posts // Assuming this returns a list of Favorite items
+    val stories by StoriesRepository.observeStories()
 
     Scaffold(
-        topBar = { FavoritesToolbar() }
-    ) {
-        LazyColumn {
-            items(favoritePosts.size) { index ->
-                val post = favoritePosts[index]
-                FavoritePostItem(
-                    favorite = post,
-                    onRemove = { favoritePosts.remove(post) } // Remove post on click
+        topBar = {
+            Row(
+                modifier = Modifier
+                    .padding(16.dp)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(Icons.Filled.Close, contentDescription = null)
+                Text(text = "Favorites")
+                Icon(Icons.Filled.Add, contentDescription = null)
+            }
+        }
+    ) { innerPadding ->
+        Box(modifier = Modifier
+            .padding(innerPadding)
+            .padding(1.dp))
+        {
+            Column {
+                OutlinedTextField(
+                    value = "",
+                    onValueChange = { /* Handle search input */ },
+                    label = { Text("Search") },
+                    leadingIcon = {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = null
+                        )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 15.dp)
+                        .padding(bottom = 12.dp),
+                    placeholder = { Text(text = "Search...") }
                 )
+                // Call FavoriteList to display the list of favorites
+                FavoriteList(favorites = posts) // Correctly calls the FavoriteList composable
             }
         }
     }
 }
 
 @Composable
-private fun FavoritesToolbar() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp)
-            .padding(horizontal = 10.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "Favorites",
-            style = MaterialTheme.typography.h6,
-            modifier = Modifier.align(Alignment.CenterVertically)
-        )
-        Icon(
-            painter = painterResource(id = R.drawable.ic_dm), // Direct messages icon
-            contentDescription = "Direct Messages",
-            modifier = Modifier.icon()
-        )
-    }
-}
+fun <Post> FavoriteList(favorites: List<Post>) {
 
-@Composable
-private fun FavoritePostItem(
-    favorite: Favorite,
-    onRemove: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable(onClick = onRemove),
-        elevation = 4.dp
-    ) {
-        Column {
-            Image(
-                painter = rememberImagePainter(favorite.image),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                contentScale = ContentScale.Crop
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            Text(
-                text = favorite.caption,
-                style = MaterialTheme.typography.body1,
-                modifier = Modifier.padding(16.dp)
-            )
-        }
-    }
 }

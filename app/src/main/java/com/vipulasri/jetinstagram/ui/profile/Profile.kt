@@ -18,7 +18,10 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
+import com.vipulasri.jetinstagram.data.StoriesRepository
 import com.vipulasri.jetinstagram.model.currentUser
+import com.vipulasri.jetinstagram.model.Story
+import com.vipulasri.jetinstagram.ui.home.StoriesSection
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -58,6 +61,10 @@ fun ProfileContent() {
 
         Divider(color = Color.Gray) // Divider line
         Spacer(modifier = Modifier.height(16.dp))
+
+        // Adding Stories Section here
+        val stories by StoriesRepository.observeStories()
+        StoriesSection(stories)
     }
 }
 

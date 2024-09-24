@@ -40,17 +40,17 @@ object PostsRepository {
     populatePosts()
   }
 
-  suspend fun toggleLike(postId: Int) {
+  suspend fun toggleLike(postId: String) {
     updateLike(postId, true)
   }
 
-  suspend fun performLike(postId: Int) {
+  suspend fun performLike(postId: String) {
     updateLike(postId, false)
   }
 
   private suspend fun updateLike(
-    postId: Int,
-    isToggle: Boolean
+      postId: String,
+      isToggle: Boolean
   ) {
     withContext(Dispatchers.IO) {
       val posts = _posts.value.toMutableList()

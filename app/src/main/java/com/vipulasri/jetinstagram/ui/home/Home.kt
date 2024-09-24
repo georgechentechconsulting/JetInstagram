@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.vipulasri.jetinstagram.R
 import com.vipulasri.jetinstagram.data.PostsRepository
 import com.vipulasri.jetinstagram.data.StoriesRepository
+import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.model.Story
 import com.vipulasri.jetinstagram.ui.components.icon
 import kotlinx.coroutines.launch
@@ -84,7 +85,7 @@ private fun Toolbar() {
 }
 
 @Composable
-private fun StoriesSection(stories: List<Story>) {
+fun StoriesSection(stories: List<Story>) {
   Column {
     StoriesList(stories)
     Spacer(modifier = Modifier.height(10.dp))

@@ -26,9 +26,10 @@ import com.vipulasri.jetinstagram.ui.HomeSection.*
 import com.vipulasri.jetinstagram.ui.components.bottomBarHeight
 import com.vipulasri.jetinstagram.ui.components.icon
 import com.vipulasri.jetinstagram.ui.home.Home
-import com.vipulasri.jetinstagram.ui.favorites.Favorite // Import Favorite
 import com.vipulasri.jetinstagram.ui.profile.Profile
 import com.vipulasri.jetinstagram.ui.reels.Reels
+import com.vipulasri.jetinstagram.ui.add.Add
+
 
 @ExperimentalFoundationApi
 @Composable
@@ -53,8 +54,8 @@ fun MainScreen() {
             when (section) {
                 Home -> Home()
                 Reels -> Reels()
-                Add -> Content(title = "Add Post options")
-                Favorite -> Favorite() // Corrected to call the Favorite composable
+                Add -> Add()
+                Favorite -> Favorite
                 Profile -> Profile() // Call Profile composable
             }
         }
@@ -125,7 +126,8 @@ private fun BottomBarProfile(isSelected: Boolean) {
 
     Box(modifier = borderModifier) {
         Box(
-            modifier = Modifier.icon()
+            modifier = Modifier
+                .icon()
                 .padding(padding)
                 .background(color = Color.LightGray, shape = shape)
                 .clip(shape)

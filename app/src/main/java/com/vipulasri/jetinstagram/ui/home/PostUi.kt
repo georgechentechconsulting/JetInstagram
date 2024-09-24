@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberImagePainter
 import com.vipulasri.jetinstagram.R.drawable
-import com.vipulasri.jetinstagram.data.entities.Post
+import com.vipulasri.jetinstagram.model.Post
 import com.vipulasri.jetinstagram.ui.components.*
 
 @ExperimentalFoundationApi
